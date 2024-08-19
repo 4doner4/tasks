@@ -21,9 +21,13 @@ class
     */
     class Hierarchy
     {
-        public static void ShowHierarchy()
+        public int Id { get; private set; } = 0;
+        public List<Root> Childrens { get; private set; } = new();
+        public void ShowHierarchy(int currentId, List<Root> roots)
         {
-            Hierarchy hierarchy = new Hierarchy();
+            this.Id = currentId;
+            this.Childrens = roots.Where(x => x.ParentId == currentId).ToList();
+            
         }
     }
 
@@ -31,7 +35,7 @@ class
     {
 
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public int? ParentId { get; set; }
     }
 
