@@ -13,24 +13,33 @@ namespace TestProject
     */
 
     // немного не понял задачу 
-    class BusyMethod
+    public class BusyMethod
     {
-        private int connectCount = 0;
-        public Task SomeBusyMethod()
-        {
 
-            connectCount++;
-            if (connectCount > 2)
+        Thread myThread; 
+        static Semaphore sem = new(3, 3);
+        private int myCount = 3;
+
+        public BusyMethod(int i)
+        {
+            myThread = new Thread(SomeBusyMethod);
+            myThread.Name = $"Читатель {i}";
+            myThread.Start();
+        }
+        public void SomeBusyMethod()
+        {
+            while (myCount > 0)
             {
-                return new Task(() => {
-                    Console.WriteLine("3 connect");
-                    });
+                Console.WriteLine($"{myThread.Name} входит");
+                sem.WaitOne();
+                Thread.Sleep(1000);
+
+                Console.WriteLine($"{myThread.Name} читает");
+                sem.Release();
+                myCount --;
+                Console.WriteLine($"{myThread.Name} Покидает поток");
+                Thread.Sleep(1000);
             }
-            Task task = new (() => {
-            });
-            task.Start();
-            connectCount --;
-            return task;
         }
     }
 }
