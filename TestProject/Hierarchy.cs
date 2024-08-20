@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,24 +21,57 @@ class
 Написать алгоритм (метод) который превратит плоскую структуру в иерархическую
 
     */
-    class Hierarchy
+    public class Node<Root>
     {
-        public int Id { get; private set; } = 0;
-        public List<Root> Childrens { get; private set; } = new();
-        public void ShowHierarchy(int currentId, List<Root> roots)
+        public Node(Root data)
         {
-            this.Id = currentId;
-            this.Childrens = roots.Where(x => x.ParentId == currentId).ToList();
-            
+            Data = data;
+        }
+        public Root Data { get; set; }
+        public Node<Root>? Next { get; set; }
+    }
+    public class LinkedListHierarchy<Root> : IEnumerable<Root>  // односвязный список
+    {
+        Node<Root>? head; // головной/первый элемент
+        Node<Root>? tail; // последний/хвостовой элемент
+        int count;  // количество элементов в списке
+
+        // добавление элемента
+        public void Add(Root data)
+        {
+            Node<Root> node = new Node<Root>(data);
+
+            if (head == null)
+                head = node;
+            else
+                tail!.Next = node;
+            tail = node;
+
+            count++;
+        }
+
+        public IEnumerator<Root> GetEnumerator()
+        {
+            Node<Root>? current = head;
+            while (current != null)
+            {
+                yield return current.Data;
+                current = current.Next;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable<Root>)this).GetEnumerator();
         }
     }
-
     class Root
     {
 
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public int? ParentId { get; set; }
+
     }
 
 }
