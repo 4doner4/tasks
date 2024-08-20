@@ -28,6 +28,7 @@ namespace TestProject
         }
         public void SomeBusyMethod()
         {
+            myCount ++;
             while (myCount > 0)
             {
                 Console.WriteLine($"{myThread.Name} входит");
@@ -36,9 +37,9 @@ namespace TestProject
 
                 Console.WriteLine($"{myThread.Name} читает");
                 sem.Release();
-                myCount --;
-                Console.WriteLine($"{myThread.Name} Покидает поток");
                 Thread.Sleep(1000);
+                Console.WriteLine($"{myThread.Name} Покидает поток");
+                myCount --;
             }
         }
     }

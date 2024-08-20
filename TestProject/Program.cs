@@ -18,3 +18,9 @@ for (int i = 0; i < 5; i++)
 foreach (Root node in roots) {
     Console.WriteLine("name: " + node.Name + " id: " + node.Id + " parent: " + node.ParentId);
 }
+
+for (int i = 1; i < 6; i++)
+{
+    new BusyMethod(i);
+    Console.WriteLine();
+}
