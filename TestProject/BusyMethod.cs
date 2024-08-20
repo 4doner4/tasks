@@ -28,17 +28,17 @@ namespace TestProject
         }
         public void SomeBusyMethod()
         {
+            myCount ++;
             while (myCount > 0)
             {
-                Console.WriteLine($"{myThread.Name} входит");
                 sem.WaitOne();
+                Console.WriteLine($"{myThread.Name} входит");
                 Thread.Sleep(1000);
-
                 Console.WriteLine($"{myThread.Name} читает");
-                sem.Release();
-                myCount --;
+                Thread.Sleep(500);
                 Console.WriteLine($"{myThread.Name} Покидает поток");
-                Thread.Sleep(1000);
+                myCount --;
+                sem.Release();
             }
         }
     }
